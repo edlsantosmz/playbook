@@ -95,6 +95,34 @@ Regular eexpression search in the commit message
 ![alt text](https://github.com/edlsantosmz/playbook/blob/master/images/git_referring_to_commits.png)
 
 ### The HEAD pointer
+Git maintains a reference variable called HEAD, all capitals, H-E-A-D. And we call this variable a pointer, because its purpose is to reference, or point to, a specific commit in the repository as we make new commits the pointer is going to change or move to point to a new commit.
+
+HEAD
+* Pointer to "tip" of current branch in repository
+* Last state of repository, what was last checked out
+* Not staging or working environment
+* [analogy] - recording audio in a tape
+
+```
+cd .git
+Eduardos-MacBook-Pro:.git eduardos$ ls -ls
+total 88
+ 8 -rw-r--r--   1 eduardos  staff     15 27 Jul 21:57 COMMIT_EDITMSG
+ 8 -rw-r--r--   1 eduardos  staff     23 27 Jul 21:56 HEAD
+ 8 -rw-r--r--   1 eduardos  staff    137 27 Jul 21:56 config
+ 8 -rw-r--r--   1 eduardos  staff     73 27 Jul 21:56 description
+ 0 drwxr-xr-x  12 eduardos  staff    384 27 Jul 21:56 hooks
+56 -rw-r--r--   1 eduardos  staff  27715 27 Jul 21:57 index
+ 0 drwxr-xr-x   3 eduardos  staff     96 27 Jul 21:56 info
+ 0 drwxr-xr-x   4 eduardos  staff    128 27 Jul 21:57 logs
+ 0 drwxr-xr-x  88 eduardos  staff   2816 27 Jul 21:57 objects
+ 0 drwxr-xr-x   4 eduardos  staff    128 27 Jul 21:56 refs
+Eduardos-MacBook-Pro:.git eduardos$ cat HEAD
+ref: refs/heads/master
+Eduardos-MacBook-Pro:.git eduardos$ cat refs/heads/master
+f247c20fe52a6fb0acf1d2773cb7b6699058461c
+```
+`git log HEAD`
 
 
 
