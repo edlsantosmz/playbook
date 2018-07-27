@@ -103,6 +103,8 @@ HEAD
 * Not staging or working environment
 * [analogy] - recording audio in a tape
 
+![alt text](https://github.com/edlsantosmz/playbook/blob/master/images/git_head.png)
+
 ```
 cd .git
 Eduardos-MacBook-Pro:.git eduardos$ ls -ls
