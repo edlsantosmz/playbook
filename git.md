@@ -92,7 +92,9 @@ Regular eexpression search in the commit message
 * Git generates this checksum is by using the SHA-1 hash algorithm
     * The number that the algorithm generates is always going to be a 40 character hexadecimal string. Hexadecimal means they can have the numbers 0 through 9 and the letters a through f.
 
+![alt text](https://github.com/edlsantosmz/playbook/blob/master/images/git_referring_to_commits.png)
 
+### The HEAD pointer
 
 
 
