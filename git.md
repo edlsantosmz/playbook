@@ -1,4 +1,5 @@
 # GIT ESSENTIAL TRAINING
+## Getting Started
 ### Performing your first commit
 
 
@@ -44,4 +45,39 @@ When an admin logged out of the admin area, they could not log in to the members
 ```
 
 `Notice that it describes what the problem was and then describes what the solution was as well.``
+
+### Viewing the commit log
+```
+git log
+commit f247c20fe52a6fb0acf1d2773cb7b6699058461c (HEAD -> master)
+Author: Eduardo <eduardos@spotify.com>
+Date:   Fri Jul 27 21:57:21 2018 +0200
+
+    Initial commit
+```
+Where
+* commit: unique ID
+* author: pulled from the global configuration
+
+`git help log`
+
+See number of commits
+`git log -n <number>`
+
+See commits in a specific period of time
+```
+git log --since=YY-MM-DD
+git log --until=YY-MM-DD
+git log --author="<name>"
+```
+
+Regular eexpression search in the commit message
+`git log --grep="<regex-string>"
+
+
+
+
+
+
+
 
