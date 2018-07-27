@@ -76,10 +76,13 @@ Regular eexpression search in the commit message
 
 ## Git concepts and architecture
 ### Exploring the three-trees architecture
+![alt text](https://github.com/edlsantosmz/playbook/blob/master/images/Skärmavbild%202018-07-27%20kl.%2022.18.55.png "Two tree architecture")
 
+![alt text](https://github.com/edlsantosmz/playbook/blob/master/images/Skärmavbild%202018-07-27%20kl.%2022.23.10.png "Three-tree architecture")
 
 * Working copy: where we have our changes that we've made, and we've saved, and saved to our hard drive, but we have not yet committed them to the repository, we haven't told Git to make this a changed set and to track it.
 * Staging index, which is where we prepare things, we stage them for the commit, and then after they've been staged, we commit them to the repository so that they are permanently tracked and they now have a commit message attached to them.
+
 
 
 
