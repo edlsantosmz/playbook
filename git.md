@@ -72,7 +72,14 @@ git log --author="<name>"
 ```
 
 Regular eexpression search in the commit message
-`git log --grep="<regex-string>"
+`git log --grep="<regex-string>"`
+
+## Git concepts and architecture
+### Exploring the three-trees architecture
+
+
+* Working copy: where we have our changes that we've made, and we've saved, and saved to our hard drive, but we have not yet committed them to the repository, we haven't told Git to make this a changed set and to track it.
+* Staging index, which is where we prepare things, we stage them for the commit, and then after they've been staged, we commit them to the repository so that they are permanently tracked and they now have a commit message attached to them.
 
 
 
