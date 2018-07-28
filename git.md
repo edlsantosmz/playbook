@@ -270,3 +270,94 @@ Changes to be committed:
 	renamed:    second -> images/info.txt
 ``` 
 
+## Git in a real project
+
+### git diff
+Use less pager which is built into UNIX. 
+
+**Toggle fold long lines:** `minus sign(-) + shift + S + return` or start it up using the -R command, and you can set that in your global configuration
+
+**Backwards:**: `b`
+
+**Forwards:** `f`
+
+#### Color the output
+`git diff --color-words <file>`
+
+```
+git diff --color-words contact.html
+diff --git a/contact.html b/contact.html
+index 80d262c..b99781c 100755
+--- a/contact.html
++++ b/contact.html
+@@ -71,7 +71,7 @@
+            <p>If you're on this page, we're guessing you've got something to say! Drop us a line, and be sure to sign up for our newsletter. If you're looking for our seasonal tours,  let us know when you're thinking of taking a trip. No
+
+            <h2>Support options</h2>
+            <p>If you're currently on a tour and need support, please visit our <a href="support.html">support</a> page. If none of these options are right for you and you still need to get in touch with us, feel free to call us at<span c
+          </div>
+
+          <form id="frmContact" name="frmContact" method="post" action="contact_process.html">
+@@ -270,7 +270,7 @@
+          <h2>Explore California</h2>
+          <p>5605 Nota Street<br />
+            Ventura, CA 93003</p>
+          <p>866.555.4310<br />866.555.4315/>866.555.41314 <em>(24 hour support)</em></p>
+        </div>
+      </div>
+    </div>
+``` 
+
+#### Shortcut: git add + git commit
+
+`git commit -am "<message>`: Add it to the staging index and then commit it. All in one big move
+
+```
+git commit -am "Updating phone number"
+[master 30ddb0c] Updating phone number
+ 10 files changed, 12 insertions(+), 12 deletions(-)
+``` 
+
+Caveat 1: grabs everyting in yor working envrionment
+
+Caveat 2: files that are not being tracked or being deleted doesn't work
+
+Examples:
+``` 
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   tours.html
+	renamed:    tours/tour_detail_backpack.html -> tours/tour_detail_backpack_cal.html
+	modified:   tours/tour_detail_bigsur.html
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   contact.html
+	
+$ git commit -m "Renamed backpack cal for clarity"
+[master 11a13c7] Renamed backpack cal for clarity
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+ rename tours/{tour_detail_backpack.html => tour_detail_backpack_cal.html} (100%)
+ 
+  git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   contact.html
+
+git commit -am "Remove some contractions"
+[master 4d1fcbe] Remove some contractions
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ 
+ ```
+ 
+ 
+
+	
