@@ -1,4 +1,4 @@
-# GIT ESSENTIAL TRAINING
+# Git Essential Training
 ## Getting Started
 ### Performing your first commit
 
@@ -236,6 +236,7 @@ index eba21f2..7b2e797 100644
 +second text
 ``` 
 ### Deleting files
+Command: `git rm <file>`
 
 ``` 
 $ git rm third
@@ -252,3 +253,20 @@ $ git commit -m "remove third"
  1 file changed, 1 deletion(-)
  delete mode 100644 third
  ``` 
+
+### Moving and renaming files
+Command: `git mv <file>`
+
+```
+$ git mv one first_file.txt
+$ mkdir images
+$ git mv second images/info.txt
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	renamed:    one -> first_file.txt
+	renamed:    second -> images/info.txt
+``` 
+
