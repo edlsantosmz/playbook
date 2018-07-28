@@ -126,6 +126,40 @@ f247c20fe52a6fb0acf1d2773cb7b6699058461c
 ```
 `git log HEAD`
 
+## Making changes to files
+### Adding files
+```
+git status
+On branch master
+
+No commits yet
+
+Changes to be committed:  <--- Staging index, things that are being staged
+  (use "git rm --cached <file>..." to unstage)
+
+	new file:   one
+
+Untracked files: <---- Things in our working directory
+  (use "git add <file>..." to include in what will be committed)
+
+	second
+    
+git commit -m "Adding one"
+[master (root-commit) 7295b6b] Adding one
+ 1 file changed, 1 insertion(+)
+ create mode 100644 one
+
+git add second
+
+git commit -m "Adding second"
+[master 4b39a35] Adding second
+ 1 file changed, 2 insertions(+)
+ create mode 100644 second
+ 
+git status
+On branch master
+nothing to commit, working tree clean
+```
 
 
 
