@@ -161,6 +161,94 @@ On branch master
 nothing to commit, working tree clean
 ```
 
+### Editing files
 
+```
+git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
 
+	modified:   one
 
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	third
+
+no changes added to commit (use "git add" and/or "git commit -a")
+$ git add one
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   one
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	third
+
+$ git commit -m "updated one"
+[master 45fff06] updated one
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Eduardos-MacBook-Pro:git_lesson eduardos$ git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	third
+
+nothing added to commit but untracked files present (use "git add" to track)
+``` 
+
+### Viewing changes with diff
+
+`git diff <file>`
+Return the changes that are in the working directory
+
+```
+$ git diff
+diff --git a/second b/second
+index eba21f2..7b2e797 100644
+--- a/second	<--- Version in the stage index (old)
++++ b/second	<--- Version in the working directory (new)
+@@ -1,2 +1,2 @@
+-second		<--- old version
++second text	<--- new version
+``` 
+
+### Viewing only staged changes
+
+`git diff --staged`
+Return the changes that are in the staging index
+
+``` 
+$git diff --staged
+diff --git a/second b/second
+index eba21f2..7b2e797 100644
+--- a/second	<--- Version in the repository (old)
++++ b/second	<--- Version in the staging index (new)
+@@ -1,2 +1,2 @@
+-second
++second text
+``` 
+### Deleting files
+
+``` 
+$ git rm third
+rm 'third'
+Eduardos-MacBook-Pro:git_lesson eduardos$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	deleted:    third
+
+$ git commit -m "remove third"
+[master eb79e59] remove third
+ 1 file changed, 1 deletion(-)
+ delete mode 100644 third
+ ``` 
