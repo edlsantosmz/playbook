@@ -356,8 +356,29 @@ git commit -am "Remove some contractions"
 [master 4d1fcbe] Remove some contractions
  1 file changed, 1 insertion(+), 1 deletion(-)
  
- ```
- 
- 
+ ``` 
+## Undoing changes
+### Undoing working directory changes
+`git checkout -- <file/folder>` 
 
-	
+It's a good practice when we're not trying to checkout a branch to put dash--dash, followed by index.html that says stay on the current branch. That bare double dash is just there to indicate that we're not checking out a new branch, we're just talking about a file in the current branch. Makes my working directory file look like what the repository has.
+
+### Unstaging files
+`git reset HEAD <file>`
+
+What we're telling it is go look at the HEAD pointer.
+The HEAD pointer points to the last commit of the tip of the current branch, which is master. That's our current branch. Go look at that last commit and reset yourself to be the same as what that has. Very similar to what checkout did. Checkout went and checked out that file from the Repo. Here we're resetting the index to be the same as that.
+
+### Amending commits
+`git commit --amend -m "<message>"`
+
+If what we wanted to do is add it to that commit, we can amend the commit by putting this change into our staging directory.
+The SHA will change even if the commit message is changed.
+
+### Retrieving old versions
+`git checkout <commit-id> -- <file>`
+Take part of the SHA and copy it and then say this commit reverts commit, and give that SHA, so it's a reference
+
+`git diff --staged`
+
+
