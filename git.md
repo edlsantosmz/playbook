@@ -360,25 +360,95 @@ git commit -am "Remove some contractions"
 ## Undoing changes
 ### Undoing working directory changes
 `git checkout -- <file/folder>` 
+* Undo files from your working environment
 
 It's a good practice when we're not trying to checkout a branch to put dash--dash, followed by index.html that says stay on the current branch. That bare double dash is just there to indicate that we're not checking out a new branch, we're just talking about a file in the current branch. Makes my working directory file look like what the repository has.
 
+```
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   resources.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+$ git diff --staged
+$ git checkout -- resources.html
+$ git status
+On branch master
+nothing to commit, working tree clean
+```
+
 ### Unstaging files
 `git reset HEAD <file>`
+* Resets the staging index whit what is in the repository
+* Undo the changes in staging and bring them out to the working environment.
 
 What we're telling it is go look at the HEAD pointer.
 The HEAD pointer points to the last commit of the tip of the current branch, which is master. That's our current branch. Go look at that last commit and reset yourself to be the same as what that has. Very similar to what checkout did. Checkout went and checked out that file from the Repo. Here we're resetting the index to be the same as that.
 
+``` 
+$ git reset HEAD resources.html
+Unstaged changes after reset:
+M	resources.html
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   resources.html
+```
+
 ### Amending commits
 `git commit --amend -m "<message>"`
 
-If what we wanted to do is add it to that commit, we can amend the commit by putting this change into our staging directory.
-The SHA will change even if the commit message is changed.
+* Amend commit message
+* Amend content of the commit
+* SHA will change every time
 
 ### Retrieving old versions
 `git checkout <commit-id> -- <file>`
+* When you check it out from our particular revision, it puts it into your staging area.
+
+``` 
+$ git checkout 4d1fcbe61d -- resources.html
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   resources.html
+
+```
+`git diff --staged`
+
+
 Take part of the SHA and copy it and then say this commit reverts commit, and give that SHA, so it's a reference
 
 `git diff --staged`
 
+### Reverting a commit
+`git revert <commit-id>`
+* Make an exact mirror image commit
 
+```
+$ git revert 9cbe0
+[master d3af33e] Revert "Rearrange items to bring on an outdoor trip"
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+$ git log
+commit d3af33ebc62f0a7a2d91832fd5382f0e79808e72 (HEAD -> master)
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 12:40:48 2018 +0200
+
+    Revert "Rearrange items to bring on an outdoor trip"
+
+    This reverts commit 9cbe0c7fb83892b712020506dd246a429d0b3632.
+```
+
+### Using reset to undo commits
+
+Caveat
+* Use it with precaution
