@@ -449,6 +449,100 @@ Date:   Sun Jul 29 12:40:48 2018 +0200
 ```
 
 ### Using reset to undo commits
+`git reset`: Allows us to specify where the HEAD pointer should point to.
+* `--soft` 
+	* does not change staging inde or working directory, it's just going to move the pointer
+* `--mixed` (default)
+	* it moves the HEAD pointer to the specified commit
+	* changes staging index to match repository
+	* does not change working directory
+* `--hard`
+	* makes our staging index and our working directory exactly match the repo.
+	* Most destructive, lose your data
+	
+#### soft reset
+```
+$ git reset --soft 9cbe0c7
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
 
-Caveat
-* Use it with precaution
+	modified:   resources.html
+	
+$ git diff --staged
+diff --git a/resources.html b/resources.html
+index 497c9e2..e609ff5 100755
+--- a/resources.html
++++ b/resources.html
+@@ -96,14 +96,14 @@
+               <ul>
+                 <li>Comfortable hiking shoes</li>
+                 <li>Hat</li>
+-                <li>Sunglasses</li>
+-                <li>Sunscreen</li>
+-                               <li>Insect repellent</li>
+                 <li>Wet/dry bag to protect valuables</li>
+                 <li>Comfortable backpack</li>
+                 <li>Stainless steel water bottle</li>
+                 <li>Multi-purpose tool</li>
+                 <li>Pack no more than one additional day of clothing</li>
++                <li>Insect repellent</li>
++                <li>Sunglasses</li>
++                <li>Sunscreen</li>
+               </ul>
+             </li>
+             <li>Bring comfortable shoes. (I know, we shouldn’t have to say that, but you’d be amazed)</li>
+$ git reset --soft d3af33eb
+$ git status
+On branch master
+nothing to commit, working tree clean
+``` 
+#### mixed reset
+``` 
+$ git log
+commit d3af33ebc62f0a7a2d91832fd5382f0e79808e72 (HEAD -> master)
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 12:40:48 2018 +0200
+
+    Revert "Rearrange items to bring on an outdoor trip"
+
+    This reverts commit 9cbe0c7fb83892b712020506dd246a429d0b3632.
+
+commit 9cbe0c7fb83892b712020506dd246a429d0b3632
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 11:35:05 2018 +0200
+
+    Rearrange items to bring on an outdoor trip
+$ git reset --mixed 9cbe0c7
+Unstaged changes after reset:
+M	resources.html
+
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   resources.html
+	
+$ git log
+commit 9cbe0c7fb83892b712020506dd246a429d0b3632 (HEAD -> master)
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 11:35:05 2018 +0200
+
+    Rearrange items to bring on an outdoor trip
+
+commit 4d1fcbe61d8943152b8c2a64ce1fa1267581fc12
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sat Jul 28 21:13:59 2018 +0200
+
+    Remove some contractions
+    
+$ git reset --mixed d3af33ebc
+```
+
+#### hard reset
+``
+
+#### hard reset 
