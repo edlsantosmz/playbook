@@ -699,7 +699,29 @@ Git is designed to be a file-tracking system
 `add .gitkeep to your empty folder`
 
 ## Navigating the commit tree
+### Referencing commits
+*tree-ish*
+* full SHA-1 hash
+* short SHA-1 hash
+	* at least 4 characters
+	* unambiguos (8-10 characters)
+* HEAD pointer
+* branch reference
+* tag reference
+* ancestry <reference><^/~>
+	* (^) caret - pointing up to the parent tree, moving up
+	* (~) tilde - number of generatios
+	* parent commit 
+		* HEAD^, acf87504^, master^
+		* HEAD~1, HEAD~
+	* grandparent commit
+		* HEAD^^, acf87504^^, master^^
+		* HEAD~2
+	* great-grandparent commit
+		* HEAD^^^, acf87504^^^, master^^^
+		* HEAD~3
 
+### Exploring tree listing
 
 
 
