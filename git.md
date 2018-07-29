@@ -543,6 +543,163 @@ $ git reset --mixed d3af33ebc
 ```
 
 #### hard reset
-``
+```
+$ git reset --hard 9cbe0c7f
+HEAD is now at 9cbe0c7 Rearrange items to bring on an outdoor trip
 
-#### hard reset 
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+$ git log
+commit 9cbe0c7fb83892b712020506dd246a429d0b3632 (HEAD -> master)
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 11:35:05 2018 +0200
+
+    Rearrange items to bring on an outdoor trip
+    
+$ git reset --hard d3af33e
+HEAD is now at d3af33e Revert "Rearrange items to bring on an outdoor trip"
+
+
+$ git log
+commit d3af33ebc62f0a7a2d91832fd5382f0e79808e72 (HEAD -> master)
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 12:40:48 2018 +0200
+
+    Revert "Rearrange items to bring on an outdoor trip"
+
+    This reverts commit 9cbe0c7fb83892b712020506dd246a429d0b3632.
+
+commit 9cbe0c7fb83892b712020506dd246a429d0b3632
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 11:35:05 2018 +0200
+
+    Rearrange items to bring on an outdoor trip
+    
+```
+
+### Removing untracked files
+
+`git clean -n` is a test run
+
+``` 
+ git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	junk1
+	junk2
+	junk3
+
+$ git clean -n
+Would remove junk1
+Would remove junk2
+Would remove junk3
+```
+
+`git clean -f` forces to run it
+
+``` 
+$ git add junk1
+$ git clean -f
+Removing junk2
+Removing junk3
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   junk1
+```
+ 
+## Ignoring files
+### Using .gitignore files
+
+`project/.gitignore`
+
+Provide Git with a set of rules that it can use to know which files to use for commits and which ones should be ignored. Those rules can be very simple, just a list of files one for each line or we can get little fancier, and you some very basic regular expressions. We can use the Asterisk, the Question Mark, a bracket of characters, a character set, or a range like 0-9.
+* very basic regular expressions
+	* * ? [aeiou] [0-9]
+* negate expressions with !
+	* *.php
+	* !index.php
+* ignore all files in a directory with trailing slash
+	* assets/videos/
+* comment lines begin with #, blank lines are skipped
+
+```
+$ cat .gitignore
+.DS_store
+*.zip
+*.gz
+log/*.log
+log/*.log.[0-9]
+assets/phothoshop/
+assets/videos/
+!assets/videos/tour*.mp4
+```
+
+### Ideas on what to ignore
+
+* compiled source code
+* pacakges and compressed files
+* logs and databases
+* operating system files generated
+* user-uploaded files
+
+Articles
+* https://help.github.com/articles/ignoring-files/
+* https://github.com/github/gitignore
+
+### Ignoring files globally
+* ignore files in all repositories
+* settings not tracked in a repository
+* user-specific instead of repository-specific
+
+```
+# Create global git ignore files
+/Users/eduardos/.gitignore_global
+
+git config --global core.excludesfile ~/.gitignore_global 
+
+$ cat ~/.gitconfig
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	name = Eduardo
+	email = eduardos@spotify.com
+[core]
+	excludesfile = /Users/eduardos/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+	
+``` 
+
+### Ignorig tracked files
+In case a file(s) has been comitted before, git will keep track of it. Git can ignore tracking files
+`git rm --cached <file>`
+* Remove this file from the staging index, not from the repository, just from the staging index.
+* That will cause the file to stop being tracked. It will still leave the copy in the repo, it will still leave the copy in my working directory. It's just going to take it out of the index.
+* Commit change of deleting.
+
+### Tracking empty directories
+Git is designed to be a file-tracking system
+* track files
+* ignore directories with no files
+
+`add .gitkeep to your empty folder`
+
+## Navigating the commit tree
+
+
+
+
