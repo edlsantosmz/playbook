@@ -723,5 +723,270 @@ Git is designed to be a file-tracking system
 
 ### Exploring tree listing
 
+``` 
+$ git ls-tree HEAD
+100644 blob 19fb1af629e7918ee0e48da303d0a98ef7981a8c	.gitignore
+040000 tree f504912e05a9dad1623270fd901afb680ccfb6d5	assets
+100755 blob 3b9d5ef95fb52270f517b400aebbf69eb6478099	contact.html
+100755 blob 681e8dc4b8d3136167d634e82409d08296ac007f	explorers.html
+100755 blob f5866d35a05d72067f8386900f637e31606f3ece	index.html
+100755 blob 81fd052de398c87c311ea392082f3012c48a3e1c	mission.html
+100755 blob e609ff5361fc96e2c65c728ce46c2fe598bcb9e0	resources.html
+040000 tree fbb3e45babe87ec29834f02429419b1b47500d7a	resources
+100755 blob e73cbdca5a60d4998dab45c7fe7d5e792d64f55e	support.html
+100755 blob 8b8f9690b4e3f225c766558b6248d3f026545467	tours.html
+040000 tree 53c61e064b038f0750898e48cf0f16d963f78e36	tours
+
+$ git ls-tree HEAD assets/
+040000 tree e3d7ef2c409b66ef02d303281f89f3dd05453931	assets/images
+040000 tree f15cbd968f05c79290272ccf7fd077fb231f7905	assets/javascripts
+040000 tree c8f3e7d20590d0d7ad6180f8fd621c65c7526484	assets/stylesheets
+
+$ git ls-tree HEAD^ assets/
+040000 tree e3d7ef2c409b66ef02d303281f89f3dd05453931	assets/images
+040000 tree f15cbd968f05c79290272ccf7fd077fb231f7905	assets/javascripts
+040000 tree c8f3e7d20590d0d7ad6180f8fd621c65c7526484	assets/stylesheets
+
+blob -> file
+tree -> directory
+``` 
+
+### Getting more from the commit log
+* `git log --oneline` 
+* `git log --oneline -<n>`
+* `git log --since="2 weeks ago" --until="1 days ago"`
+* `git log --since=2.weeks --until=1.days`
+* `git log --grep"<regex>"`
+* `git log <ref1>..<ref2> --oneline`
+* `git log <ref1>.. <file>`
+* `git log -p` Patch option
+* `git log --stat --summary`
+* `git log --format=oneline`
+* `git log --format=short`
+* `git log --format=full`
+* `git log --format=fuller`
+* `git log --format=email`
+* `git log --format=raw`
+* `git log --graph`
+* `git log --format=oneline`
+* `git log --oneline --graph --all --decorate`
+
+
+```
+$ git log --oneline
+218c9d9 (HEAD -> master) Adding .gitignore files
+d3af33e Revert "Rearrange items to bring on an outdoor trip"
+9cbe0c7 Rearrange items to bring on an outdoor trip
+4d1fcbe Remove some contractions
+11a13c7 Renamed backpack cal for clarity
+30ddb0c Updating phone number
+6071420 Initialize repository
+
+$ git log --since="2 weeks ago" --until="1 days ago"
+commit 4d1fcbe61d8943152b8c2a64ce1fa1267581fc12
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sat Jul 28 21:13:59 2018 +0200
+
+    Remove some contractions
+...
+
+$ git log --since=2.weeks --until=1.day
+commit 9cbe0c7fb83892b712020506dd246a429d0b3632
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 11:35:05 2018 +0200
+
+    Rearrange items to bring on an outdoor trip
+...
+
+$ git log 4d1fcbe..d3af33e --oneline
+d3af33e Revert "Rearrange items to bring on an outdoor trip"
+9cbe0c7 Rearrange items to bring on an outdoor trip
+
+$ git log 6071420.. index.html
+commit 30ddb0ccfd279dc4080d03b95a140396f91dc801
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sat Jul 28 20:58:55 2018 +0200
+
+    Updating phone number
+    
+commit 218c9d98a7e62aa6458eb67944ecdbf0b5abd270 (HEAD -> master)
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 19:50:52 2018 +0200
+
+    Adding .gitignore files
+
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..19fb1af
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,9 @@
++.DS_store
++*.zip
++*.gz
++log/*.log
++log/*.log.[0-9]
++assets/phothoshop/
++assets/videos/
++!assets/videos/tour*.mp4
++
+
+$ git log -p 6071420.. index.html
+commit 30ddb0ccfd279dc4080d03b95a140396f91dc801
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sat Jul 28 20:58:55 2018 +0200
+
+    Updating phone number
+
+diff --git a/index.html b/index.html
+index 1268a45..f5866d3 100755
+--- a/index.html
++++ b/index.html
+@@ -119,7 +119,7 @@
+           <h2>Explore California</h2>
+           <p>5605 Nota Street<br />
+             Ventura, CA 93003</p>
+-          <p>866.555.4310<br />866.555.4315 <em>(24 hour support)</em></p>
++          <p>866.555.4310<br />866.555.41314 <em>(24 hour support)</em></p>
+         </div>
+       </div>
+     </div>
+     
+$git log --stat --summary
+commit 218c9d98a7e62aa6458eb67944ecdbf0b5abd270 (HEAD -> master)
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 19:50:52 2018 +0200
+
+    Adding .gitignore files
+
+ .gitignore | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+ create mode 100644 .gitignore
+ 
+ $ git log --format=oneline
+218c9d98a7e62aa6458eb67944ecdbf0b5abd270 (HEAD -> master) Adding .gitignore files
+d3af33ebc62f0a7a2d91832fd5382f0e79808e72 Revert "Rearrange items to bring on an outdoor trip"
+9cbe0c7fb83892b712020506dd246a429d0b3632 Rearrange items to bring on an outdoor trip
+4d1fcbe61d8943152b8c2a64ce1fa1267581fc12 Remove some contractions
+11a13c731485417fe1ef9d251874ed598bbf1a47 Renamed backpack cal for clarity
+30ddb0ccfd279dc4080d03b95a140396f91dc801 Updating phone number
+60714201c4a8fd702d18db13a08500b27e5fddc4 Initialize repository
+
+ git log --graph
+* commit 218c9d98a7e62aa6458eb67944ecdbf0b5abd270 (HEAD -> master)
+| Author: Eduardo <eduardos@spotify.com>
+| Date:   Sun Jul 29 19:50:52 2018 +0200
+|
+|     Adding .gitignore files
+|
+
+$ git log --oneline --graph --all --decorate
+* 218c9d9 (HEAD -> master) Adding .gitignore files
+* d3af33e Revert "Rearrange items to bring on an outdoor trip"
+* 9cbe0c7 Rearrange items to bring on an outdoor trip
+* 4d1fcbe Remove some contractions
+* 11a13c7 Renamed backpack cal for clarity
+* 30ddb0c Updating phone number
+* 6071420 Initialize repository
+
+```
+
+### Viewing commits
+* `git show <commit-id>` Does not work with a file
+* `git show --format=oneline HEAD~3`
+
+```
+$ git show 9cbe0c7
+commit 9cbe0c7fb83892b712020506dd246a429d0b3632
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Jul 29 11:35:05 2018 +0200
+
+    Rearrange items to bring on an outdoor trip
+
+diff --git a/resources.html b/resources.html
+index e609ff5..497c9e2 100755
+--- a/resources.html
++++ b/resources.html
+@@ -96,14 +96,14 @@
+               <ul>
+                 <li>Comfortable hiking shoes</li>
+                 <li>Hat</li>
++                <li>Sunglasses</li>
++                <li>Sunscreen</li>
++                               <li>Insect repellent</li>
+                 <li>Wet/dry bag to protect valuables</li>
+                 <li>Comfortable backpack</li>
+                 <li>Stainless steel water bottle</li>
+                 <li>Multi-purpose tool</li>
+                 <li>Pack no more than one additional day of clothing</li>
+-                <li>Insect repellent</li>
+-                <li>Sunglasses</li>
+-                <li>Sunscreen</li>
+               </ul>
+             </li>
+             <li>Bring comfortable shoes. (I know, we shouldn’t have to say that, but you’d be amazed)</li>
+
+$ git show --format=oneline HEAD~2
+9cbe0c7fb83892b712020506dd246a429d0b3632 Rearrange items to bring on an outdoor trip
+diff --git a/resources.html b/resources.html
+index e609ff5..497c9e2 100755
+--- a/resources.html
++++ b/resources.html
+@@ -96,14 +96,14 @@
+               <ul>
+                 <li>Comfortable hiking shoes</li>
+                 <li>Hat</li>
++                <li>Sunglasses</li>
++                <li>Sunscreen</li>
++                               <li>Insect repellent</li>
+                 <li>Wet/dry bag to protect valuables</li>
+                 <li>Comfortable backpack</li>
+                 <li>Stainless steel water bottle</li>
+                 <li>Multi-purpose tool</li>
+                 <li>Pack no more than one additional day of clothing</li>
+-                <li>Insect repellent</li>
+-                <li>Sunglasses</li>
+-                <li>Sunscreen</li>
+               </ul>
+             </li>
+             <li>Bring comfortable shoes. (I know, we shouldn’t have to say that, but you’d be amazed)</li>
+```
+
+### Comparing commits
+* `git diff <commit-id> <file>`
+* `git diff <commit-id-1>..<commit-id-2> <file>
+* `git diff --stat --summary <commit-id>..HEAD`
+* `git diff --stat --summary -b -w <commit-id>..HEAD` `-b` ignores space change and `-w`ignores all spaces
+
+```
+$ git diff 30ddb0c contact.html
+diff --git a/contact.html b/contact.html
+index b99781c..3b9d5ef 100755
+--- a/contact.html
++++ b/contact.html
+@@ -68,7 +68,7 @@
+           <h1>Get in touch</h1>
+           <img src="assets/images/emerald_bay.jpg" alt="Beautiful Lake Tahoe" class="articleImage" />
+           <div class="multiCol">
+-            <p>If you're on this page, we're guessing you've got something to say! Drop us a line, and be sure to sign up for our newsletter. If you're looking for our seasonal tours,  let us know when you're thinking of taking a trip. N
++            <p>If you are on this page, we are guessing you have got something to say! Drop us a line, and be sure to sign up for our newsletter. If you are looking for our seasonal tours,  let us know when you are thinking of taking a t
+
+             <h2>Support options</h2>
+             <p>If you're currently on a tour and need support, please visit our <a href="support.html">support</a> page. If none of these options are right for you and you still need to get in touch with us, feel free to call us at<span
+(END)
+
+$ git diff 4d1fcbe..d3af33e contact.html
+$ git diff 4d1fcbe..HEAD^ contact.html
+
+$ git diff --stat --summary 11a13c7..HEAD
+ .gitignore   | 9 +++++++++
+ contact.html | 2 +-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+ create mode 100644 .gitignore
+ 
+ 
+```
+
+## Branching
 
 
