@@ -954,7 +954,7 @@ index e609ff5..497c9e2 100755
 
 ### Comparing commits
 * `git diff <commit-id> <file>`
-* `git diff <commit-id-1>..<commit-id-2> <file>
+* `git diff <commit-id-1>..<commit-id-2> <file>`
 * `git diff --stat --summary <commit-id>..HEAD`
 * `git diff --stat --summary -b -w <commit-id>..HEAD` `-b` ignores space change and `-w`ignores all spaces
 
@@ -988,5 +988,35 @@ $ git diff --stat --summary 11a13c7..HEAD
 ```
 
 ## Branching
+* branches are cheap
+	* try new ideas
+	* isolate features
+* one working directory
+* fast context switching
+
+### Creating new branch
+`git branch <name>`
+
+### Switching branches
+
+### Creating and switching branches
+`git checkout -b <branch-name>` Create a new branch and switch to it
+* N.B. The based branch will be the one where HEAD currently point to it.
+
+### Switching branches with uncommited changes
+Keep your files untracked in your working environment so you can switch between branches.
+
+### Comparing branches
 
 
+## Merging branches
+### Merging code
+0. clean your directory
+1. check out the receiving branch
+2. `git merge <sending branch>` 
+	* Sending branch: target branch or the sending branch where you're going to be getting those changes from.
+
+* `git diff master..<sending_branch>`
+* `git branch --merged`
+
+### Fast forwards vs true merge
