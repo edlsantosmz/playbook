@@ -1,4 +1,15 @@
 # Git Essential Training
+## Installing Git
+### Exploring Git-auto-completion (Mac/Linux)
+1. Install homebrew
+
+2. Install Git and bash-completion: brew install git bash-completion (Note: If this install fails with a 404 error, and you already have git installed, just remove the git part of this brew install)
+
+3 .Add bash-completion to your `~/.bash_profile`:
+
+`[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion`
+
+
 ## Getting Started
 ### Performing your first commit
 
@@ -1007,6 +1018,56 @@ $ git diff --stat --summary 11a13c7..HEAD
 Keep your files untracked in your working environment so you can switch between branches.
 
 ### Comparing branches
+Shorthands
+* `git diff <Branch_A>..<Branch_B>`
+* `git diff --color-words <Branch_A>..<Branch_B>` 	See changes in one line
+* `git diff --color-words <Branch_A>..<Branch_B>^`	Previous commit
+* `git branch --merged`	Whether one branch completely contains another branch, that is whether or not everything in it has been merged into the current branch
+```
+Where:
+	.. 		Range operator
+	Branch_A	Old state
+	Branch_B	New state
+	
+git diff <Branch_A>..<Branch_B>
+	
+$ git diff master..shorten_title
+diff --git a/index.html b/index.html
+index f5866d3..c47621d 100755
+--- a/index.html
++++ b/index.html
+@@ -3,7 +3,7 @@
+ <html lang="en">
+   <head>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+-    <title>Welcome to Explore California</title>				<-- Branch A
++    <title>Explore California: Affordable outdoor tours</title>		<-- Branch B
+     <link href="assets/stylesheets/main.css" rel="stylesheet" type="text/css" media="all">
+     <script src="assets/javascripts/jquery-1.5.1.min.js"></script>
+     <script src="assets/javascripts/jquery-ui-1.8.10.custom.min.js"></script>
+     
+$ git branch --merged
+  master
+* shorten_title
+
+$ git branch --merged
+* master   
+```
+### Renaming branches
+`git branch -m <current_branch_name> <new_branch_name>`
+`git branch --move <current_branch_name> <new_branch_name>`
+Give a distinguis name to the branch like ticket number.
+
+### Deleting branches
+`git brancg -d <branch_to_delete>`
+`git branch --delete <branch_to_delete>`
+`git branch --D <branch_to_delete>` Forces to throw away all those changes that are in that branch
+
+* Cannot delete that you currently on
+* The branch should be merged
+
+### Configuring the command prompt to show the branch
+
 
 
 ## Merging branches
