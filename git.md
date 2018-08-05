@@ -1067,6 +1067,13 @@ Give a distinguis name to the branch like ticket number.
 * The branch should be merged
 
 ### Configuring the command prompt to show the branch
+`__git_ps1`
+* `PS1` Prompt String One, 
+```
+$ echo $PS1
+\h:\W \u\$
+Eduardos-MacBook-Pro:explore_california eduardos$
+```
 
 
 
