@@ -1385,7 +1385,7 @@ explore_california(master) > cat .git/config
 ```
 
 ### Creating a remote branch
-* `git push -u <alias_for_the_remote_repository> <branch>
+* `git push -u <alias_for_the_remote_repository> <branch>` The option `-u` tracks a remote branch
 * `cat .git/config`
 * `git branch -r` List remote branches
 * `git branch -a`List all branches
@@ -1446,5 +1446,37 @@ explore_california(master) > git branch -a
   remotes/origin/master
 ```
 
+### Cloning a remote repository
+* `git clone <url> [version]`
+* `git clone -b <url> [version]` Specify wich branch to fetch
 
+To check
+* Github admin controls
 
+```
+git clone https://github.com/edlsantosmz/explore_california.git lynda_version
+Cloning into 'lynda_version'...
+remote: Counting objects: 116, done.
+remote: Compressing objects: 100% (79/79), done.
+remote: Total 116 (delta 34), reused 116 (delta 34), pack-reused 0
+Receiving objects: 100% (116/116), 1.01 MiB | 1.13 MiB/s, done.
+Resolving deltas: 100% (34/34), done.
+```
+
+### Tracking remote branch
+```
+lynda_version(master) > cat .git/config
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "origin"]
+	url = https://github.com/edlsantosmz/explore_california.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+	
