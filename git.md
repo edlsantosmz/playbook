@@ -1075,7 +1075,8 @@ $ echo $PS1
 Eduardos-MacBook-Pro:explore_california eduardos$
 ```
 
-
+Add your decoration in `~/.bash_profile`
+`export PS1='\W$(__git_ps1 "(%s)") > '`
 
 ## Merging branches
 ### Merging code
@@ -1088,3 +1089,362 @@ Eduardos-MacBook-Pro:explore_california eduardos$
 * `git branch --merged`
 
 ### Fast forwards vs true merge
+Fast forwards happens when the only object that's different branches is the one commit that master doesn't have
+
+* `git merge --no-ff <sending_branch>` Forces Git to create a merge commit anyway, in case you want to have documentation of the commit
+* `git merge --ff-only <sending_branch>` Do the merge only if yo can do a fast-forward
+
+Merge `recursive` strategy, it figured out how to make a merge between the two.
+
+### Merging conflicts
+Example
+```
+git checkout -b text_edits
+
+explore_california(master) > git log --oneline
+1fd6eba (HEAD -> master) Replaces double quotes with curly quotes
+218c9d9 Adding .gitignore files
+d3af33e Revert "Rearrange items to bring on an outdoor trip"
+9cbe0c7 Rearrange items to bring on an outdoor trip
+4d1fcbe Remove some contractions
+11a13c7 Renamed backpack cal for clarity
+30ddb0c Updating phone number
+6071420 Initialize repository
+explore_california(master) > git log text_edits --oneline
+fb06d89 (text_edits) Text edits on mission page
+218c9d9 Adding .gitignore files
+d3af33e Revert "Rearrange items to bring on an outdoor trip"
+9cbe0c7 Rearrange items to bring on an outdoor trip
+4d1fcbe Remove some contractions
+11a13c7 Renamed backpack cal for clarity
+30ddb0c Updating phone number
+6071420 Initialize repository
+
+
+explore_california(master) > git merge text_edits
+Auto-merging mission.html
+CONFLICT (content): Merge conflict in mission.html
+Automatic merge failed; fix conflicts and then commit the result.
+explore_california(master|MERGING) >
+
+
+explore_california(master|MERGING) > git status
+On branch master
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+
+	both modified:   mission.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+
+Conflicts are marked with
+
+<<<<<<< HEAD
+=======
+>>>>>>> text_edits
+```
+### Resolving merge conflicts
+Three choices
+* Abort merge
+
+`git merge --abort`
+
+```
+explore_california(master|MERGING) > git merge --abort
+explore_california(master) > git status
+On branch master
+nothing to commit, working tree clean
+
+```
+* Resolve the conflicts manually
+`git add <file>`
+
+`git commit`
+
+```
+explore_california(master|MERGING) > git log --oneline -3
+1fd6eba (HEAD -> master) Replaces double quotes with curly quotes
+218c9d9 Adding .gitignore files
+d3af33e Revert "Rearrange items to bring on an outdoor trip"
+
+explore_california(master|MERGING) > git show 1fd6eba
+commit 1fd6eba5873553551729cc33860f7c6253ecdc35 (HEAD -> master)
+Author: Eduardo <eduardos@spotify.com>
+Date:   Sun Aug 5 07:36:58 2018 +0200
+
+    Replaces double quotes with curly quotes
+
+diff --git a/mission.html b/mission.html
+index 81fd052..68bfeb1 100755
+--- a/mission.html
++++ b/mission.html
+@@ -64,7 +64,7 @@
+           <div class="multiCol">
+             <p>We are passionate about California and preserving the abundant resources that make it so unique. Our goal at Explore California is to transfo
+             <p>Our tours are crafted around our central mission, and are designed to engage you in a unique and fulfilling way. All our tours are sensitive
+-            <p>We've been asked before how we choose our tours. It's simple really, we approach our tours as the enthusiasts we are! When we scout for locat
++            <p>We&rsquo;ve been asked before how we choose our tours. It's simple really, we approach our tours as the enthusiasts we are! When we scout for
+             <p>We've also worked very hard to make Explore California more than just a tour company. <a href="explorers/join.html">Join our community</a> an
+           </div>
+:
+```
+
+See the differenes between both branches commits
+
+```
+diff --git a/mission.html b/mission.html
+index 68bfeb1..42706f4 100755
+--- a/mission.html
++++ b/mission.html
+@@ -62,10 +62,10 @@
+          <h1>Who we are</h1>
+          <img src="assets/images/mission_look.jpg" alt="Looking out at the Pacific" class="articleImage" />
+          <div class="multiCol">
+            <p>We are passionate about California and preserving the abundant resources that make it so unique. Our goal at Explore California is to transform your vacation into an adventure that will educate, inspire, and energize you unlike any other.</p>you.</p>
+            <p>Our tours are crafted around our central mission, and are designed to engage you in a unique and fulfilling way. All our tours are sensitive to the environment,environmentally sensitive, and will provide you will an opportunity to explore California in your own way.</p>
+            <p>We&rsquo;ve<p>We've been asked before how we choose our tours. It's simple really, we approach our tours as the enthusiasts we are! When we scout for locations, choose tour options, or explore the surrounding area for exciting side-tours, we ask ourselves onea question, &rdquo;is&quot;is this something we would want to do?&ldquo;do?&quot; We also look very carefully at a tour&rsquo;stour's potential impact. We choose tours that are as environmentally sensitive as we are, and that expose people to amazing diversity of California's people, places, and wildlife!</p>
+            <p>We've<p>We have also worked very hard to make Explore California more than just a tour company. <a href="explorers/join.html">Join our community</a> and become part of the conversation. Recommend tours, blog about your journeys, and share pictures and video with other tour members.</p>
+          </div>
+        </div>
+      </div>
+```     
+`git log --graph --oneline --all --decorate`
+
+```
+explore_california(master) > git log --graph --oneline --all --decorate
+*   c0070b9 (HEAD -> master) Merge branch 'text_edits'
+|\
+| * fb06d89 (text_edits) Text edits on mission page
+* | 1fd6eba Replaces double quotes with curly quotes
+|/
+| * 6a975da (shorten_title) Changes Title Index
+|/
+* 218c9d9 Adding .gitignore files
+* d3af33e Revert "Rearrange items to bring on an outdoor trip"
+* 9cbe0c7 Rearrange items to bring on an outdoor trip
+* 4d1fcbe Remove some contractions
+* 11a13c7 Renamed backpack cal for clarity
+* 30ddb0c Updating phone number
+* 6071420 Initialize repository
+```
+
+
+* Use a merge tool
+`git mergetool --tool=<merge_tool>`
+
+```
+explore_california(master) > git mergetool
+
+This message is displayed because 'merge.tool' is not configured.
+See 'git mergetool --tool-help' or 'git help config' for more details.
+'git mergetool' will now attempt to use one of the following tools:
+tortoisemerge emerge vimdiff
+No files need merging
+```
+
+### Strategies to reduce merge conflicts
+* Keep lines short
+* Keep commits small and focused
+* Beware stray edits to whitespace
+ - spaces, tabs, line returns
+* Merge often
+* Track changes to master, keep branch in synch with master branch (`tracking` process)
+
+## Stashing changes
+### Saving changes in the stash
+The stash is a place where we can store changes temporarily without having to commit them to the repository. It's a lot like putting something into a drawer to save it for later. The stash is not part of the repository, the staging index or the working directory, it's a special fourth area in Git, separate from the others.
+
+They're still a snapshot of the changes that we were in the process of making, just like a commit is. But they dont have a SHA associated with them.
+
+`git stash save "<message>"`
+
+It's possible to stash untracked files.
+
+```
+git status
+On branch shorten_title
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   mission.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+explore_california(shorten_title) > git checkout master
+error: Your local changes to the following files would be overwritten by checkout:
+	mission.html
+Please commit your changes or stash them before you switch branches.
+Aborting
+explore_california(shorten_title) > git stash save mission.html
+Saved working directory and index state On shorten_title: mission.html
+``` 
+### Viewing stashed changes
+* `git stash list`
+* `git stash show stash@{0}`
+* `git stash show -p stash@{0}`
+
+```
+git stash list
+stash@{0}: On shorten_title: mission.html    <--- stash-item, branch, description
+
+git stash show stash@{0}
+ mission.html | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ 
+git stash show -p stash@{0}
+diff --git a/mission.html b/mission.html
+index 81fd052..6224aa5 100755
+--- a/mission.html
++++ b/mission.html
+@@ -3,7 +3,7 @@
+ <html lang="en">
+   <head>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+-    <title>Explore California: Mission</title>
++    <title>Mission</title>
+     <link href="assets/stylesheets/main.css" rel="stylesheet" type="text/css" media="all">
+     <script src="assets/javascripts/jquery-1.5.1.min.js"></script>
+     <script src="assets/javascripts/jquery-ui-1.8.10.custom.min.js"></script>
+```
+
+### Retrieving stashed changes
+* `git stash pop` Pops the commit out and it's longer in there at all
+* `git stash apply` Pull it out and lave a copy in the stash
+* By the faults pop/apply the latest commit
+
+### Deleting stashed changes
+*`git stash drop stash@{0}`
+* `git stash clear` Clear all stashes
+
+```
+git stash drop stash@{0}
+Dropped stash@{0} (81a83be6b912737ea3482530748991314da0d766)
+
+```
+
+## Remote branches
+### Using local and remote repositories
+* `origin/master` in a local branch that references the remote server branch. 
+Git also makes another branch on our local computer that is typically called origin slash and then whatever the branch name is.
+* `push` Push branch to the remote server
+* `fetch` Fetch is essentially saying sync up my origin master with the remote server version, but it does not bring it into our master branch.
+
+The process that you go through when you're working with a remote, is that you'll do your commits locally, then you'll fetch the latest from the remote server, get your origin branch in sync, then merge any of the new work you did into what just came down from the server and then push the result back up to the remote server
+
+### Setting up a GitHub account
+* Github repository: `https://github.com/edlsantosmz/explore_california`
+
+```
+…or create a new repository on the command line
+echo "# explore_california" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/edlsantosmz/explore_california.git
+git push -u origin master
+
+…or push an existing repository from the command line <-- (We want this)
+git remote add origin https://github.com/edlsantosmz/explore_california.git
+git push -u origin master
+
+…or import code from another repository
+You can initialize this repository with code from a Subversion, Mercurial, or TFS project.
+```
+
+### Adding a remote repository
+* `git remote add <alias> <url>`
+* `git remote rm <alias>`
+* `git remote` Shows all remote brances
+* `git remote -v`
+* `cat .git/config`
+
+```
+> git remote
+explore_california(master) > git remote add origin https://github.com/edlsantosmz/explore_california.git
+explore_california(master) > git remote
+origin
+explore_california(master) > git remote -v
+origin	https://github.com/edlsantosmz/explore_california.git (fetch)
+origin	https://github.com/edlsantosmz/explore_california.git (push)
+explore_california(master) > cat .git/config
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "origin"]
+	url = https://github.com/edlsantosmz/explore_california.git
+	fetch = +refs/heads/*:refs/remotes/origin/*			<-- Instrcutions for fetching
+```
+
+### Creating a remote branch
+* `git push -u <alias_for_the_remote_repository> <branch>
+* `cat .git/config`
+* `git branch -r` List remote branches
+* `git branch -a`List all branches
+
+
+```
+> git push -u origin master
+Username for 'https://github.com': edlsantosmz
+Password for 'https://edlsantosmz@github.com':
+Enumerating objects: 116, done.
+Counting objects: 100% (116/116), done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (113/113), done.
+Writing objects: 100% (116/116), 1.01 MiB | 24.15 MiB/s, done.
+Total 116 (delta 34), reused 0 (delta 0)
+remote: Resolving deltas: 100% (34/34), done.
+To https://github.com/edlsantosmz/explore_california.git
+ * [new branch]      master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'. <-- This is what -u option does
+explore_california(master) >
+
+> cat .git/config
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "origin"]
+	url = https://github.com/edlsantosmz/explore_california.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]	<-- New branch definition
+	remote = origin
+	merge = refs/heads/master
+	
+> ls -la .git/refs/remotes/
+total 0
+drwxr-xr-x  3 eduardos  staff   96  5 Aug 16:02 .
+drwxr-xr-x  5 eduardos  staff  160  5 Aug 16:02 ..
+drwxr-xr-x  3 eduardos  staff   96  5 Aug 16:02 origin
+
+> ls -la .git/refs/remotes/origin/
+total 8
+drwxr-xr-x  3 eduardos  staff  96  5 Aug 16:02 .
+drwxr-xr-x  3 eduardos  staff  96  5 Aug 16:02 ..
+-rw-r--r--  1 eduardos  staff  41  5 Aug 16:02 master
+
+> cat .git/refs/remotes/origin/master
+c0070b9bb236f15dfdc1e54485bd82a6c014d89a
+
+> git branch -r
+  origin/master
+explore_california(master) > git branch -a
+* master
+  shorten_title
+  text_edits
+  remotes/origin/master
+```
+
+
+
