@@ -1385,7 +1385,7 @@ explore_california(master) > cat .git/config
 ```
 
 ### Creating a remote branch
-* `git push -u <alias_for_the_remote_repository> <branch>` The option `-u` tracks a remote branch
+* `git push -u <alias_for_the_remote_repository> <branch>` The option `-u` tracks a remote branch, shorthand for `--set-upstream
 * `cat .git/config`
 * `git branch -r` List remote branches
 * `git branch -a`List all branches
@@ -1476,7 +1476,163 @@ lynda_version(master) > cat .git/config
 [remote "origin"]
 	url = https://github.com/edlsantosmz/explore_california.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
-[branch "master"]
+[branch "master"] 	<--- Branch master is setup to track the refs/heads/master that's on origin
 	remote = origin
 	merge = refs/heads/master
-	
+```
+
+Add tracking to new branches
+* `git config branch.<branch_name>.remote <remote_repo_alias>`
+* `git config branch.<branch_name>.merge refs/heads/master`
+
+Recommended way
+* `git branch --set-upstream non_tracking origin/non_tracking``
+
+### Pushing changes to a remote repository
+* `git push origin master` when is not being tracked
+* `git push` it's enough with `push` because this is a tracking branch
+
+```
+explore_california(master) > git log --oneline -3
+ad26339 (HEAD -> master) Change file/link format on tours.html
+c0070b9 (origin/master) Merge branch 'text_edits'
+1fd6eba Replaces double quotes with curly quotes
+
+
+explore_california(master) > git log origin/master --oneline -3  <--- pointer to remote branch
+c0070b9 (origin/master) Merge branch 'text_edits'
+1fd6eba Replaces double quotes with curly quotes
+fb06d89 (text_edits) Text edits on mission page
+explore_california(master) > git diff origin/master..master
+diff --git a/tours.html b/tours.html
+index 8b8f969..5fcaf86 100755
+--- a/tours.html
++++ b/tours.html
+@@ -83,35 +83,35 @@
+
+             <div class="tourDescription">
+               <h2>California Calm</h2>
+-              <p><img src="assets/images/calm_desc_bug.gif" width="195" height="120" alt="California Calm" />Looking for a little relaxation?
+
+
+explore_california(master) > git push
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 374 bytes | 374.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/edlsantosmz/explore_california.git
+   c0070b9..ad26339  master -> master
+explore_california(master) >
+explore_california(master) >
+explore_california(master) > git diff origin/master..master
+
+```
+
+### Fetching changes from a remote repository
+Fetch is what synchronizes origin/ master with whatever is on the remote repository. Origin/master doesn't automatically reflect what's on the remote repository, we have to tell Git that we want it to do a sync between the two.
+
+* `git fetch origin`
+* `git fech`
+
+when we synchronize with remote repository using fetch, we just update origin/master. Master doesn't change at all
+
+*Guidelines*
+* fetch before you work
+* fetch before you push
+* fetch often
+
+```
+lynda_version(master) > git log --oneline -3
+c0070b9 (HEAD -> master, origin/master, origin/HEAD) Merge branch 'text_edits'
+1fd6eba Replaces double quotes with curly quotes
+fb06d89 Text edits on mission page
+lynda_version(master) > git log origin/master --oneline -3
+c0070b9 (HEAD -> master, origin/master, origin/HEAD) Merge branch 'text_edits'
+1fd6eba Replaces double quotes with curly quotes
+fb06d89 Text edits on mission page
+lynda_version(master) > git branch
+* master
+lynda_version(master) > git branch -r
+  origin/HEAD -> origin/master
+  origin/master
+lynda_version(master) > git fetch
+remote: Counting objects: 3, done.
+remote: Compressing objects: 100% (1/1), done.
+remote: Total 3 (delta 2), reused 3 (delta 2), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From https://github.com/edlsantosmz/explore_california
+   c0070b9..ad26339  master     -> origin/master
+lynda_version(master) > git log origin/master --oneline -3
+ad26339 (origin/master, origin/HEAD) Change file/link format on tours.html
+c0070b9 (HEAD -> master) Merge branch 'text_edits'
+1fd6eba Replaces double quotes with curly quotes
+lynda_version(master) > git log --oneline -3
+c0070b9 (HEAD -> master) Merge branch 'text_edits'
+1fd6eba Replaces double quotes with curly quotes
+fb06d89 Text edits on mission page
+```
+
+### Merging in fetched changes
+* `git pull = git fetch + git merge`
+
+### Check out remote branches
+* `git branch <branch_name> <starting_point og this branch>`
+* `git branch test HEAD`
+* `git branch test origin/test`
+* Check with `.git/config`
+* `git checkout -b test origin/test`
+
+### Pushing to an updated remote branch
+*  it's just simply because there were new commits.
+* `git fetch`
+* `git merge origin/master`
+
+### Delete remote branch
+* `git push origin :<branch_name>`
+
+That's explained by
+* `git push origin <local_branch_name>:<remote_branch_name>`
+* `git push origin :<remote_branch_name>` Nothing is being pushed 
+
+Recommended way
+* `git push origin --delete <branch_name>`
+
+### Enabling collaboration
+* Pull Request
+
+### Colaboration workflow
+*My work*
+* `git checkou master`
+* `git fetch`
+* `git merge origin/master`
+* `git checkou -b <branch>`
+* `git add <file>`
+* `git commit -m "<message>"
+* `git fetch`
+* `git push -u origin <remote_branch>` 
+
+*Another*
+* `git checkou master`
+* `git fetch`
+* `git merge origin/master`
+* `git checkou -b <partner_branch> origin <partner_branch>`
+* `git log`
+* `git show <commit/branch/HEAD>`
+* `git commit -m "<message>"
+* `git fetch`
+* `git push`
+
+*My work*
+* `git fetch`
+* `git log -p <branch>..<remote_branch>` See the differences (-p patch)
+* `git merge origin/<remote_branch>` Fast forward or true merge
+* `git checkout master`
+* `git fetch`
+* `git merge origin/master`
+* `git merge <branch>`
+* `git push`
+
+### More?
