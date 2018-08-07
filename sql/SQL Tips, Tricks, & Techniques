@@ -1,0 +1,16 @@
+## Introduction
+### Tools
+* SQL Server 2014
+* Adventure Works 2014 DW Restored
+* SQL Managment Studio
+
+## Retrieve data using SQL
+SQL (`Structured Query Language`)
+
+Why use SQL?
+* Data retrieval
+* Data manipulation
+* Complex analysis
+* Universal across all databaes (stardard sintax)
+
+
